@@ -1,11 +1,19 @@
-// import 'package:http/http.dart' as http;
+import 'package:dio/dio.dart';
 
-// class ApiClient {
+import '../constants/api_constants.dart';
 
-//   final http.Client client;
-//   ApiClient(this.client);
-
-//   Future<http.Response> getApi(String url) async {
-//     return await client.get(Uri.parse(url));
-//   }
-// }
+class ApiClient {
+  late final Dio dio;
+  ApiClient() {
+    dio = Dio(
+      BaseOptions(
+        baseUrl: ApiConstants.baseUrl,
+        connectTimeout: const Duration(seconds: 10),
+        receiveTimeout: const Duration(seconds: 10),
+      ),
+    );
+    dio.interceptors.add(
+      LogInterceptor(requestBody: true, responseBody: true),
+    );
+  }
+}

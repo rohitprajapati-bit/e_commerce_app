@@ -1,9 +1,4 @@
-import 'package:e_commerce_app/core/dependency_injection/service_locator.dart';
-import 'package:e_commerce_app/features/e_commerce/data/datasources/product_remote_datasource.dart';
-import 'package:e_commerce_app/features/e_commerce/data/datasources/product_remote_datasocure_impl.dart';
-import 'package:e_commerce_app/features/e_commerce/data/repository/product_repository_impl.dart';
-import 'package:e_commerce_app/features/e_commerce/domain/repository/product_repository.dart';
-import 'package:e_commerce_app/features/e_commerce/domain/usecases/all_product_usecase.dart';
+part of 'service_locator.dart';
 
 class DependencyInjection {
   void init() {
@@ -16,6 +11,17 @@ class DependencyInjection {
 
     getIt.registerLazySingleton<ProductGetUsecase>(
       () => ProductGetUsecase(getIt()),
+    );
+
+    // Category feature dependencies
+    getIt.registerLazySingleton<CategoryRemoteDataSource>(
+      () => CategoryRemoteDataSourceImpl(),
+    );
+    getIt.registerLazySingleton<CategoryRepository>(
+      () => CategoryRepositoryImpl(remoteDataSource: getIt()),
+    );
+    getIt.registerLazySingleton<GetCategories>(
+      () => GetCategories(repository: getIt()),
     );
   }
 }
